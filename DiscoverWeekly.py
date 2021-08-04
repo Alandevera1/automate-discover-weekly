@@ -7,11 +7,13 @@ from datetime import datetime
 
 ### TODO ###
 # add exception handling
-# create GUI, web app, or website
+# AUTOMATE
 # QOL changes
 ### TODO ###
 
 load_dotenv()
+
+# creates client to Spotify 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=os.getenv('CLIENT_ID'),
                                                client_secret=os.getenv('CLIENT_SECRET'),
                                                redirect_uri=os.getenv('REDIRECT_URI'),
@@ -21,7 +23,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=os.getenv('CLIENT_ID'),
 BASE_URL = 'https://api.spotify.com/v1/'
 AUTH_URL = 'https://accounts.spotify.com/api/token'
 
-# POST to get Spotify access token 1
+# POST to get Spotify access token 
 auth_response = requests.post(AUTH_URL, {
     'grant_type': 'client_credentials',
     'client_id': os.getenv('CLIENT_ID'), # Spotify integration ID
@@ -60,20 +62,6 @@ def get_playlist_tracks(playlist_url):
 def create_playlist_image(img):
     pass
 
-def img2base64(img_link):
-    import numpy as np
-    import base64
-    import urllib
-    from PIL import Image
-    with open("img_file.jpg", "wb") as f:
-        f.write(urllib.request.urlopen(img_link).read())
-    tmp_img = np.asarray(Image.open("img_file.jpg"))
-    tmp_thumb = tmp_img.resize((250, 250), Image.ANTIALIAS)
-    tmp_thumb.save("thumb_file.jpg")
-    with open("thumb_file.jpg", "rb") as img:
-        thumb_string = base64.b64encode(img.read())
-    base64out = "data:image/jpeg;base64," + str(thumb_string)[2:-1]
-    return(base64out)
 
 def run():
     name = f'Discover Weekly [{datetime.today().strftime("%#m/%#d/%Y")}]'
